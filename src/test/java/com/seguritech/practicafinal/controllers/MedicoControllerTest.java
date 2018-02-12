@@ -102,17 +102,32 @@ public class MedicoControllerTest {
 //        fail("The test case is a prototype.");
 //    }
 //
-//    @Test
-//    public void testListAll() {
-//        System.out.println("listAll");
-//        int especialidad = 0;
-//        MedicoController instance = null;
-//        List<Medico> expResult = null;
-//        List<Medico> result = instance.listAll(especialidad);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testListAll_isOkWhenMedicoIsFound() throws Exception {
+        System.out.println("listAll");
+        final int especialidad = 1;
+
+        mockMvc.perform(get("/medicos/" + especialidad)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.medico_id").isNumber())
+                .andExpect(jsonPath("$.nombre").isString())
+                .andExpect(jsonPath("$.especialidad").isNumber())
+                .andExpect(jsonPath("$.estado").isString())
+                ;
+     
+    }
+    
+    @Test
+    public void testListAll_isError404WhenMedicosNotFound() throws Exception {
+        System.out.println("listAll");
+        final int especialidad = 10;
+
+        mockMvc.perform(get("/medicos/" + especialidad)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
+    }
 //
 //    @Test
 //    public void testUpdate() throws Exception {
@@ -127,15 +142,14 @@ public class MedicoControllerTest {
 //    }
 //
 //    @Test
-//    public void testDeleteMedico() {
+//    public void testDeleteMedico() throws Exception {
 //        System.out.println("deleteMedico");
-//        Long id = null;
-//        MedicoController instance = null;
-//        ResponseEntity<Medico> expResult = null;
-//        ResponseEntity<Medico> result = instance.deleteMedico(id);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+//        Long id = 4l;
+//        
+//          mockMvc.perform(delete("/medicos {id}/", id)
+//                  .accept(MediaType.APPLICATION_JSON))
+//                  .andExpect(status().isOk());
+//        
 //    }
     
 }

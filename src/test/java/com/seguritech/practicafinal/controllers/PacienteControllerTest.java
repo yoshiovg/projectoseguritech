@@ -103,19 +103,34 @@ public class PacienteControllerTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-//
-//    @Test
-//    public void testListAll() {
-//        System.out.println("listAll");
-//        int obra = 0;
-//        PacienteController instance = null;
-//        List<Paciente> expResult = null;
-//        List<Paciente> result = instance.listAll(obra);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+
+    @Test
+    public void testListAll_isOkWhenPacienteIsFound() throws Exception {
+        System.out.println("listAll");
+        final int obra = 1;
+        
+         mockMvc.perform(get("/pacientes/" + obra)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.paciente_id").isNumber())
+                .andExpect(jsonPath("$.dni").isString())
+                .andExpect(jsonPath("$.nombre").isString())
+                .andExpect(jsonPath("$.e_mail").isString())
+                .andExpect(jsonPath("$.telefono").isString())
+                .andExpect(jsonPath("$.obra").isNumber()) 
+                ;
+    }
+
+     @Test
+    public void testListAll_isError404WhenPacienteNotFound() throws Exception {
+        System.out.println("listAll");
+        final int obra = 20;
+
+        mockMvc.perform(get("/pacientes/" + obra)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
+    }
 //    @Test
 //    public void testUpdate() throws Exception {
 //        System.out.println("update");
@@ -129,15 +144,13 @@ public class PacienteControllerTest {
 //    }
 //
 //    @Test
-//    public void testDeletePaciente() {
+//    public void testDeletePaciente() throws Exception {
 //        System.out.println("deletePaciente");
-//        Long id = null;
-//        PacienteController instance = null;
-//        ResponseEntity<Paciente> expResult = null;
-//        ResponseEntity<Paciente> result = instance.deletePaciente(id);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+//        Long id = 8L;
+//        
+//        mockMvc.perform(delete("/pacientes {id}/" ,id)
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
 //    }
 //    
 }
