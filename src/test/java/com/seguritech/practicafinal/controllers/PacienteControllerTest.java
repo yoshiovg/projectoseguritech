@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -29,6 +30,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 public class PacienteControllerTest {
     
     private MockMvc mockMvc;
+    
+    private final String paciente = "{\"dni\" : \"122477735\"},\"nombre\" : \"Luis Miguel\"},\"e_mail\" : \"luismiguel@gmail.com\"},{\"telefono\" : \"3828263783\"},{\"obra\" : 1}";
+    private final String pacienteup = "{\"paciente_id\" : 2},{\"dni\" : \"122477735\"},\"nombre\" : \"Luis Miguel\"},\"e_mail\" : \"luismiguel@gmail.com\"},{\"telefono\" : \"3828263783\"},{\"obra\" : 1}";
     
     PacienteController pacienteController;
     
@@ -92,17 +96,15 @@ public class PacienteControllerTest {
     }
     
     
-//    @Test
-//    public void testCreate() throws Exception {
-//        System.out.println("create");
-//        Paciente paciente = null;
-//        PacienteController instance = null;
-//        ResponseEntity<Paciente> expResult = null;
-//        ResponseEntity<Paciente> result = instance.create(paciente);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void testCreate() throws Exception {
+        System.out.println("create");
+        
+        mockMvc.perform(post("/pacientes/")
+                 .content(paciente)
+	         .contentType(APPLICATION_JSON_UTF8))
+		 .andExpect(status().isCreated());
+    }
 
     @Test
     public void testListAll_isOkWhenPacienteIsFound() throws Exception {
@@ -131,26 +133,24 @@ public class PacienteControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));
     }
-//    @Test
-//    public void testUpdate() throws Exception {
-//        System.out.println("update");
-//        Paciente paciente = null;
-//        PacienteController instance = null;
-//        ResponseEntity<Paciente> expResult = null;
-//        ResponseEntity<Paciente> result = instance.update(paciente);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    @Test
-//    public void testDeletePaciente() throws Exception {
-//        System.out.println("deletePaciente");
-//        Long id = 8L;
-//        
-//        mockMvc.perform(delete("/pacientes {id}/" ,id)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//    
+    @Test
+    public void testUpdate() throws Exception {
+        System.out.println("update");
+        
+        mockMvc.perform(put("/pacientes/")
+                 .content(pacienteup)
+	         .contentType(APPLICATION_JSON_UTF8))
+		 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeletePaciente() throws Exception {
+        System.out.println("deletePaciente");
+        Long id = 2L;
+        
+        mockMvc.perform(delete("/pacientes/" +id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+    
 }
