@@ -53,6 +53,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-ehcache</artifactId>
+		    <version>5.2.12.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -63,6 +69,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
